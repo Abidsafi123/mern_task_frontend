@@ -15,8 +15,7 @@ export const addTask = createAsyncThunk(
   async (taskData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      const res = await taskService.createTask(taskData, token);
-      return res.task; // ⚠ return single task object
+      return await taskService.createTask(taskData, token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.toString());
     }
@@ -29,8 +28,7 @@ export const getTasks = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      const res = await taskService.getTasks(token);
-      return res.tasks || []; // ⚠ always return array
+      return await taskService.getTasks(token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.toString());
     }
@@ -43,20 +41,17 @@ export const deleteTask = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      await taskService.deleteTask(id, token);
-      return id; // return deleted task id
+      return await taskService.deleteTask(id, token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.toString());
     }
   }
 );
 
-export const taskSlice = createSlice({
+const taskSlice = createSlice({
   name: "task",
   initialState,
-  reducers: {
-    reset: (state) => initialState,
-  },
+  reducers: { reset: () => initialState },
   extraReducers: (builder) => {
     builder
       // CREATE
@@ -64,33 +59,31 @@ export const taskSlice = createSlice({
       .addCase(addTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.tasks.push(action.payload); // ⚠ single task object
+        state.tasks.push(action.payload);
       })
       .addCase(addTask.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      
       // GET
       .addCase(getTasks.pending, (state) => { state.isLoading = true; })
       .addCase(getTasks.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.tasks = action.payload; // ⚠ ensure array
+        state.tasks = action.payload.tasks || action.payload; // handle both {tasks:[..]} or array
       })
       .addCase(getTasks.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-
       // DELETE
       .addCase(deleteTask.pending, (state) => { state.isLoading = true; })
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.tasks = state.tasks.filter(task => task._id !== action.payload);
+        state.tasks = state.tasks.filter((task) => task._id !== action.meta.arg);
       })
       .addCase(deleteTask.rejected, (state, action) => {
         state.isLoading = false;

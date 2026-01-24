@@ -1,32 +1,29 @@
 import axios from "axios";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/api/tasks`;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/tasks`; // no trailing slash
 
 // CREATE TASK
 const createTask = async (taskData, token) => {
-  const config = {
+  const res = await axios.post(API_URL, taskData, {
     headers: { Authorization: `Bearer ${token}` },
-  };
-  const res = await axios.post(API_URL, taskData, config);
-  return res.data; // expecting { task: { ... } }
+  });
+  return res.data; // expects { task: {...} }
 };
 
 // GET ALL TASKS
 const getTasks = async (token) => {
-  const config = {
+  const res = await axios.get(API_URL, {
     headers: { Authorization: `Bearer ${token}` },
-  };
-  const res = await axios.get(API_URL, config);
-  return res.data; // expecting { tasks: [...] }
+  });
+  return res.data; // expects { tasks: [...] }
 };
 
 // DELETE TASK
 const deleteTask = async (id, token) => {
-  const config = {
+  const res = await axios.delete(`${API_URL}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
-  };
-  const res = await axios.delete(`${API_URL}/${id}`, config);
-  return res.data; // expecting { success: true }
+  });
+  return res.data; // expects { success: true }
 };
 
 export default { createTask, getTasks, deleteTask };

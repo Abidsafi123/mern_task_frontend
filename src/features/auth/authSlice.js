@@ -18,7 +18,9 @@ export const registerUser = createAsyncThunk(
     try {
       return await authService.registerUser(userData);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
     }
   }
 );
@@ -30,7 +32,9 @@ export const loginUser = createAsyncThunk(
     try {
       return await authService.loginUser(userData);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
     }
   }
 );
@@ -53,6 +57,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // REGISTER
       .addCase(registerUser.pending, (state) => { state.isLoading = true; })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -66,6 +71,7 @@ const authSlice = createSlice({
         state.user = null;
         state.message = action.payload;
       })
+      // LOGIN
       .addCase(loginUser.pending, (state) => { state.isLoading = true; })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -79,6 +85,7 @@ const authSlice = createSlice({
         state.user = null;
         state.message = action.payload;
       })
+      // LOGOUT
       .addCase(logoutUser.fulfilled, (state) => { state.user = null; });
   },
 });
