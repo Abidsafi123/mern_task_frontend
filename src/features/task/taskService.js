@@ -1,32 +1,32 @@
 import axios from "axios";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/api/user/`;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/tasks`;
 
-// REGISTER
-const registerUser = async (userData) => {
-  const res = await axios.post(API_URL, userData);
-
-  if (res.data) {
-    localStorage.setItem("user", JSON.stringify(res.data));
-  }
-
+// CREATE TASK
+const createTask = async (taskData, token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const res = await axios.post(API_URL, taskData, config);
   return res.data;
 };
 
-// LOGIN
-const loginUser = async (userData) => {
-  const res = await axios.post(`${API_URL}login`, userData);
-
-  if (res.data) {
-    localStorage.setItem("user", JSON.stringify(res.data));
-  }
-
+// GET TASKS
+const getTasks = async (token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const res = await axios.get(API_URL, config);
   return res.data;
 };
 
-// LOGOUT
-const logoutUser = async () => {
-  localStorage.removeItem("user");
+// DELETE TASK
+const deleteTask = async (id, token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const res = await axios.delete(`${API_URL}/${id}`, config);
+  return res.data;
 };
 
-export default { registerUser, loginUser, logoutUser };
+export default { createTask, getTasks, deleteTask };
