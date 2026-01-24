@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
 import taskService from "./taskService";
 
 const initialState = {
@@ -10,6 +9,7 @@ const initialState = {
   message: "",
 };
 
+// CREATE TASK
 export const addTask = createAsyncThunk(
   "task/createTask",
   async (taskData, thunkAPI) => {
@@ -17,12 +17,14 @@ export const addTask = createAsyncThunk(
       const token = thunkAPI.getState().auth.user.token;
       return await taskService.createTask(taskData, token);
     } catch (error) {
-      const message = error.response?.data?.message || error.toString();
+      const message =
+        error.response?.data?.message || error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
+// GET TASKS
 export const getTasks = createAsyncThunk(
   "task/getTasks",
   async (_, thunkAPI) => {
@@ -30,14 +32,14 @@ export const getTasks = createAsyncThunk(
       const token = thunkAPI.getState().auth.user.token;
       return await taskService.getTasks(token);
     } catch (error) {
-      const message = error.response?.data?.message || error.toString();
+      const message =
+        error.response?.data?.message || error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
-// delete tasks
-
+// DELETE TASK
 export const deleteTask = createAsyncThunk(
   "task/deleteTask",
   async (id, thunkAPI) => {
@@ -46,14 +48,12 @@ export const deleteTask = createAsyncThunk(
       return await taskService.deleteTask(id, token);
     } catch (error) {
       const message =
-        error.response ||
-        error.response.data ||
-        error.response.data.message ||
-        error.toString();
+        error.response?.data?.message || error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
+
 export const taskSlice = createSlice({
   name: "task",
   initialState,
@@ -62,6 +62,8 @@ export const taskSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      // CREATE
       .addCase(addTask.pending, (state) => {
         state.isLoading = true;
       })
@@ -75,19 +77,23 @@ export const taskSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
+      // GET
       .addCase(getTasks.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getTasks.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.tasks = action.payload.tasks; //MAIN FIX
+        state.tasks = action.payload; // ✅ FIXED
       })
       .addCase(getTasks.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
+
+      // DELETE
       .addCase(deleteTask.pending, (state) => {
         state.isLoading = true;
       })
@@ -98,10 +104,10 @@ export const taskSlice = createSlice({
           (task) => task._id !== action.meta.arg
         );
       })
-
       .addCase(deleteTask.rejected, (state, action) => {
-        (state.isLoading = false), (state.isError = true),
-        state.message = action.payload
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
