@@ -47,8 +47,9 @@ try {
   
 } catch (error) {
   return thunkAPI.rejectWithValue(
-    error.response?.data?.message || error.message ||error.toString();
+    error.response?.data?.message || error.message ||error.toString()
   )
+  
   
 }
 });
