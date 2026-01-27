@@ -18,7 +18,7 @@ const TaskItem = ({ task }) => {
   }
 
   return (
-    <div data-aos = 'flip-left' className="relative bg-gray-300 p-5 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 mt-2">
+    <div data-aos = 'flip-left' className="relative bg-gray-200 p-5 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 mt-2 ">
 
       <button
         onClick={onDelete}
