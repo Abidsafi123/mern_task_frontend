@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/api/user`; // no trailing slash
-
+// const API_URL = `${import.meta.env.VITE_API_URL}/api/user`; // no trailing slash
+const API_URL = `http://localhost:8000/api/user`
 // REGISTER
 const registerUser = async (userData) => {
   const res = await axios.post(`${API_URL}`, userData);
