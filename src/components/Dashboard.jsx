@@ -26,7 +26,7 @@ const Dashboard = () => {
     <div>
       {/* Welcome */}
       <h1 data-aos='fade-up' className="text-center font-semibold mt-5">
-        Welcome {user?.username}
+        Welcome <span className="text-blue-600 font-bold">{user?.username}</span> 
       </h1>
 
       
