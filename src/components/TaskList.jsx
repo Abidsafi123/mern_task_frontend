@@ -39,7 +39,7 @@ const TaskList = () => {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
       {tasks.length === 0 ? (
         <h1
           className="text-center mt-3 font-semibold col-span-full"

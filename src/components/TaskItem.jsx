@@ -18,7 +18,7 @@ const TaskItem = ({ task }) => {
   }
 
   return (
-    <div data-aos = 'flip-left' className="relative bg-white p-5 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+    <div data-aos = 'flip-left' className="relative bg-gray-300 p-5 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 mt-2">
 
       <button
         onClick={onDelete}
@@ -33,7 +33,7 @@ const TaskItem = ({ task }) => {
         {new Date(task.createdAt).toLocaleString('en-US')}
       </p>
 
-      <h2 className="text-lg font-semibold text-gray-800">
+      <h2 className="text-lg  font-semibold text-gray-800">
         {task.text}
       </h2>
 
