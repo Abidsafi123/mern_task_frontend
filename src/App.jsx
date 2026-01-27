@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TaskList from "./components/TaskList";
+import AdminDashBoard from "./components/adminDashboard";
 import AOS from "aos"
 import "aos/dist/aos.css";
 
@@ -26,6 +27,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path = '/admin' element={<AdminDashBoard/>}/>
         <Route path="/register" element={<Register />} />
         <Route path="/alltask" element = {<TaskList/>}/>
       </Routes>
