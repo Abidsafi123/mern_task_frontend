@@ -2,11 +2,13 @@ import React,{useEffect,useState} from 'react'
  
 
 
-const adminDashboard = () => {
+const AdminDashboard = () => {
    
   return (
-    <div>adminDashboard</div>
+    <div className='flex items-center justify-center'>
+        adminDashboard
+        </div>
   )
 }
 
-export default adminDashboard
+export default AdminDashboard
